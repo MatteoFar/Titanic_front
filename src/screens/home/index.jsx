@@ -1,4 +1,5 @@
 import React from "react";
+import LoginFormComponent from "./loginForm";
 
 export default function LoginScreen() {
   return (
@@ -9,16 +10,7 @@ export default function LoginScreen() {
           Connectez-vous ou inscrivez vous afin d'effectuer des recherches
           statistique sur les passagers du titanic.
         </h4>
-        <div className="w-1/4 m-auto p-10">
-          <h5>Connexion</h5>
-          <form>
-            <div className="flex flex-col">
-              <input type="text" placeholder="email" />
-              <input type="text" placeholder="mot de passe" />
-            </div>
-            <button type="submit">Connexion</button>
-          </form>
-        </div>
+        <LoginFormComponent />
       </div>
     </div>
   );
