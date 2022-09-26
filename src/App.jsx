@@ -1,7 +1,18 @@
+import React from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import Home from "./screens/home";
 import "./App.css";
+import HeaderComponent from "./component/header";
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <BrowserRouter>
+      <HeaderComponent />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
