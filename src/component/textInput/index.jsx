@@ -1,13 +1,24 @@
 import React from "react";
 
-export default function TextInputComponent({ id, type, placeholder }) {
+export default function TextInputComponent({
+  id,
+  type,
+  placeholder,
+  onChange,
+  hasErrors,
+  value,
+}) {
   return (
     <div>
       <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+        className={`shadow appearance-none ${
+          hasErrors?.length ? "border-red-500" : "border-black"
+        } border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
         id={id}
+        value={value}
         type={type}
         placeholder={placeholder}
+        onChange={onChange}
       />
     </div>
   );

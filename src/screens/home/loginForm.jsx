@@ -1,116 +1,231 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import TextInputComponent from "../../component/textInput";
 import MainButtonComponent from "../../component/mainButton";
 import { useLoginForm } from "../../context/LoginFormContext";
+import { validatorsInscriptionFrom, validatorsLoginFrom } from "./validators";
+
+const Error = (err) => {
+  const errorsData = err.err;
+  return (
+    <div>
+      {errorsData && (
+        <p className="text-red-500">
+          {errorsData.map((e) => {
+            return e.message;
+          })}
+        </p>
+      )}
+    </div>
+  );
+};
 
 export default function LoginFormComponent() {
   const loginForm = useLoginForm();
+
+  const [errors, setErrors] = useState([]);
+
+  const [signUp, setSignUp] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [signIn, setSignIn] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handlePost = (e, type) => {
+    try {
+      e.preventDefault();
+      if (type == "connection") {
+        validatorsLoginFrom(signIn);
+        console.log(validatorsLoginFrom(signIn));
+        console.log("handlePostConnection");
+        setSignIn({
+          email: "",
+          password: "",
+        });
+      } else {
+        validatorsInscriptionFrom(signUp);
+        console.log(validatorsInscriptionFrom(signUp));
+        console.log("handlePostInscritpion");
+        setSignUp({
+          firstname: "",
+          lastname: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+      }
+      setErrors([]);
+    } catch (error) {
+      setErrors(error);
+    }
+  };
+
+  console.log(errors);
+
   return (
     <div className="w-1/4 m-auto p-10">
       {loginForm ? (
-        <div class="w-full max-w-xs">
-          <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div class="mb-4">
+        <div className="w-full max-w-xs">
+          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div className="mb-4">
               <label
-                class="block text-gray-700 text-sm font-bold mb-2"
-                for="username"
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="username"
               >
                 Email
               </label>
+              <Error err={errors.filter((e) => e.type == "email")} />
               <TextInputComponent
                 id={"username"}
                 type={"text"}
+                value={signIn.email}
                 placeholder={"johnDoe@gmail.com"}
+                hasErrors={errors.filter((e) => e.type == "email")}
+                onChange={(e) =>
+                  setSignIn((prev) => ({ ...prev, email: e.target.value }))
+                }
               />
             </div>
-            <div class="mb-6">
+            <div className="mb-6">
               <label
-                class="block text-gray-700 text-sm font-bold mb-2"
-                for="password"
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="password"
               >
                 Mot de passe
               </label>
+              <Error err={errors.filter((e) => e.type == "password")} />
               <TextInputComponent
                 id={"password"}
                 type={"password"}
+                value={signIn.password}
                 placeholder={"******************"}
+                hasErrors={errors.filter((e) => e.type == "password")}
+                onChange={(e) =>
+                  setSignIn((prev) => ({ ...prev, password: e.target.value }))
+                }
               />
             </div>
-            <div class="flex items-center justify-center">
-              <MainButtonComponent type={"submit"} title={"Connexion"} />
+            <div className="flex items-center justify-center">
+              <MainButtonComponent
+                onClick={(e) => handlePost(e, "connection")}
+                type={"submit"}
+                title={"Connexion"}
+              />
             </div>
           </form>
         </div>
       ) : (
-        <div class="w-full max-w-xs">
-          <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-            <div class="mb-4">
+        <div className="w-full max-w-xs">
+          <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div className="mb-4">
               <label
-                class="block text-gray-700 text-sm font-bold mb-2"
-                for="username"
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="lastname"
               >
                 Nom
               </label>
+              <Error err={errors.filter((e) => e.type == "lastname")} />
               <TextInputComponent
-                id={"username"}
+                id={"lastname"}
                 type={"text"}
-                placeholder={"johnDoe@gmail.com"}
+                placeholder={"Doe"}
+                value={signUp.lastname}
+                hasErrors={errors.filter((e) => e.type == "lastname")}
+                onChange={(e) =>
+                  setSignUp((prev) => ({ ...prev, lastname: e.target.value }))
+                }
               />
             </div>
-            <div class="mb-4">
+            <div className="mb-4">
               <label
-                class="block text-gray-700 text-sm font-bold mb-2"
-                for="username"
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="firstname"
               >
                 Prénom
               </label>
+              <Error err={errors.filter((e) => e.type == "firstname")} />
               <TextInputComponent
-                id={"username"}
+                id={"firstname"}
                 type={"text"}
-                placeholder={"johnDoe@gmail.com"}
+                placeholder={"John"}
+                value={signUp.firstname}
+                hasErrors={errors.filter((e) => e.type == "firstname")}
+                onChange={(e) =>
+                  setSignUp((prev) => ({ ...prev, firstname: e.target.value }))
+                }
               />
             </div>
-            <div class="mb-4">
+            <div className="mb-4">
               <label
-                class="block text-gray-700 text-sm font-bold mb-2"
-                for="username"
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="email"
               >
                 Email
               </label>
+              <Error err={errors.filter((e) => e.type == "emailSignUp")} />
               <TextInputComponent
-                id={"username"}
+                id={"email"}
                 type={"text"}
+                value={signUp.email}
                 placeholder={"johnDoe@gmail.com"}
+                hasErrors={errors.filter((e) => e.type == "emailSignUp")}
+                onChange={(e) =>
+                  setSignUp((prev) => ({ ...prev, email: e.target.value }))
+                }
               />
             </div>
-            <div class="mb-6">
+            <div className="mb-6">
               <label
-                class="block text-gray-700 text-sm font-bold mb-2"
-                for="password"
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="password"
               >
                 Mot de passe
               </label>
+              <Error err={errors.filter((e) => e.type == "passwordSignUp")} />
               <TextInputComponent
                 id={"password"}
                 type={"password"}
+                value={signUp.password}
                 placeholder={"******************"}
+                hasErrors={errors.filter((e) => e.type == "passwordSignUp")}
+                onChange={(e) =>
+                  setSignUp((prev) => ({ ...prev, password: e.target.value }))
+                }
               />
             </div>
-            <div class="mb-6">
+            <div className="mb-6">
               <label
-                class="block text-gray-700 text-sm font-bold mb-2"
-                for="password"
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="confirmPassword"
               >
                 Confirmer mot de passe
               </label>
+              <Error err={errors.filter((e) => e.type == "passwordSignUp")} />
               <TextInputComponent
-                id={"password"}
+                id={"confirmPassword"}
                 type={"password"}
+                value={signUp.confirmPassword}
                 placeholder={"******************"}
+                hasErrors={errors.filter((e) => e.type == "passwordSignUp")}
+                onChange={(e) =>
+                  setSignUp((prev) => ({
+                    ...prev,
+                    confirmPassword: e.target.value,
+                  }))
+                }
               />
             </div>
-            <div class="flex items-center justify-center">
-              <MainButtonComponent type={"submit"} title={"Inscription"} />
+            <div className="flex items-center justify-center">
+              <MainButtonComponent
+                onClick={(e) => handlePost(e, "handlePostInscritpion")}
+                type={"submit"}
+                title={"Inscription"}
+              />
             </div>
           </form>
         </div>
