@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUpdateLoginForm } from "../../context/LoginFormContext";
-import { verifyToken } from "../../tools";
 
 export default function HeaderComponent() {
   const updateLoginForm = useUpdateLoginForm();
 
   const [login, setLogin] = useState(true);
+  const token = localStorage.getItem("token");
+  let navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("HEADER");
-  }, []);
+  const logoffUser = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   useEffect(() => {
     updateLoginForm(login);
@@ -21,12 +24,19 @@ export default function HeaderComponent() {
         <h1 className="">Titanic</h1>
       </div>
       <div className="flex items-center">
-        <h1 className="mr-5" onClick={() => setLogin(true)}>
-          Connexion
-        </h1>
-        <h1 className="" onClick={() => setLogin(false)}>
-          Inscription
-        </h1>
+        {!token ? (
+          <div className="flex items-center">
+            {" "}
+            <h1 className="mr-5" onClick={() => setLogin(true)}>
+              Connexion
+            </h1>
+            <h1 className="" onClick={() => setLogin(false)}>
+              Inscription
+            </h1>
+          </div>
+        ) : (
+          <h1 onClick={() => logoffUser()}>Deconnexion</h1>
+        )}
       </div>
     </div>
   );

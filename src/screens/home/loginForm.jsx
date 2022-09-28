@@ -4,6 +4,7 @@ import MainButtonComponent from "../../component/mainButton";
 import { useLoginForm } from "../../context/LoginFormContext";
 import { validatorsInscriptionFrom, validatorsLoginFrom } from "./validators";
 import { useUpdateLoginForm } from "../../context/LoginFormContext";
+import { useUpdateIsLogged } from "../../context/isLoggedContext";
 import { useNavigate } from "react-router-dom";
 import apiService from "../../services";
 
@@ -24,6 +25,7 @@ const Error = (err) => {
 
 export default function LoginFormComponent() {
   const loginForm = useLoginForm();
+  const updateIslogin = useUpdateIsLogged();
   const updateLoginForm = useUpdateLoginForm();
 
   const [errors, setErrors] = useState([]);
@@ -56,6 +58,7 @@ export default function LoginFormComponent() {
             });
             navigate("/search");
             window.localStorage.setItem("token", e.data.token);
+            updateIslogin(true);
           }
         });
       } else {
