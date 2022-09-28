@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { verifyToken } from "../../tools";
 import LoginFormComponent from "./loginForm";
 
 export default function LoginScreen() {
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (verifyToken() !== null) {
+      navigate("/search");
+    }
+  }, []);
   return (
     <div>
       <div className="flex-col justify-center text-center">

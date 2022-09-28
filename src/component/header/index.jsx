@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useUpdateLoginForm } from "../../context/LoginFormContext";
+import { verifyToken } from "../../tools";
 
 export default function HeaderComponent() {
   const updateLoginForm = useUpdateLoginForm();
 
   const [login, setLogin] = useState(true);
+
+  useEffect(() => {
+    console.log("HEADER");
+  }, []);
 
   useEffect(() => {
     updateLoginForm(login);

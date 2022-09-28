@@ -3,6 +3,9 @@ import TextInputComponent from "../../component/textInput";
 import MainButtonComponent from "../../component/mainButton";
 import { useLoginForm } from "../../context/LoginFormContext";
 import { validatorsInscriptionFrom, validatorsLoginFrom } from "./validators";
+import { useUpdateLoginForm } from "../../context/LoginFormContext";
+import { useNavigate } from "react-router-dom";
+import apiService from "../../services";
 
 const Error = (err) => {
   const errorsData = err.err;
@@ -21,6 +24,7 @@ const Error = (err) => {
 
 export default function LoginFormComponent() {
   const loginForm = useLoginForm();
+  const updateLoginForm = useUpdateLoginForm();
 
   const [errors, setErrors] = useState([]);
 
@@ -36,36 +40,54 @@ export default function LoginFormComponent() {
     password: "",
   });
 
+  let navigate = useNavigate();
+
   const handlePost = (e, type) => {
     try {
       e.preventDefault();
       if (type == "connection") {
         validatorsLoginFrom(signIn);
-        console.log(validatorsLoginFrom(signIn));
-        console.log("handlePostConnection");
-        setSignIn({
-          email: "",
-          password: "",
+        apiService.postLogin(signIn).then((e) => {
+          if (e.status == 200) {
+            console.log("TESTLOGIN", e);
+            setSignIn({
+              email: "",
+              password: "",
+            });
+            navigate("/search");
+            window.localStorage.setItem("token", e.data.token);
+          }
         });
       } else {
+        const { firstname, lastname, email, password } = signUp;
         validatorsInscriptionFrom(signUp);
-        console.log(validatorsInscriptionFrom(signUp));
         console.log("handlePostInscritpion");
-        setSignUp({
-          firstname: "",
-          lastname: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
+        apiService
+          .postUser({
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            password: password,
+          })
+          .then((e) => {
+            if (e.status == 200) {
+              console.log("TESTSIGNUP", e);
+              setSignUp({
+                firstname: "",
+                lastname: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+              });
+              updateLoginForm(true);
+            }
+          });
       }
       setErrors([]);
     } catch (error) {
       setErrors(error);
     }
   };
-
-  console.log(errors);
 
   return (
     <div className="w-1/4 m-auto p-10">

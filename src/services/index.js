@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const titanicService = axios.create({
-  baseURL: "http://localhost:7001/",
+  baseURL: "http://localhost:7003/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -10,6 +10,11 @@ const titanicService = axios.create({
 const apiService = {
   async postUser(newUser) {
     const res = await titanicService.post("/signup", newUser);
+    return res;
+  },
+
+  async postLogin(user) {
+    const res = await titanicService.post("/signin", user);
     return res;
   },
 };
