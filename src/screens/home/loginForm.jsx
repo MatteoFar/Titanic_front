@@ -50,6 +50,7 @@ export default function LoginFormComponent() {
       if (type == "connection") {
         validatorsLoginFrom(signIn);
         apiService.postLogin(signIn).then((e) => {
+          console.log(e);
           if (e.status == 200) {
             console.log("TESTLOGIN", e);
             setSignIn({
@@ -59,6 +60,9 @@ export default function LoginFormComponent() {
             navigate("/search");
             window.localStorage.setItem("token", e.data.token);
             updateIslogin(true);
+          } else if (e.status === 205) {
+            setErrors([{ type: "login", message: "Compte introuvable" }]);
+            console.log("compte pas trouvé");
           }
         });
       } else {
@@ -98,6 +102,7 @@ export default function LoginFormComponent() {
         <div className="w-full max-w-xs">
           <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <div className="mb-4">
+              <Error err={errors.filter((e) => e.type == "login")} />
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="username"

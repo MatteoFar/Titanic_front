@@ -13,7 +13,7 @@ export default function TextInputComponent({
       <input
         className={`shadow appearance-none ${
           hasErrors?.length ? "border-red-500" : "border-black"
-        } border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
+        } border rounded-2xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
         id={id}
         value={value}
         type={type}
