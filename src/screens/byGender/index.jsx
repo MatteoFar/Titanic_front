@@ -14,7 +14,7 @@ import {
 import _ from "lodash";
 import { verifyToken } from "../../tools";
 import { useNavigate } from "react-router-dom";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import apiService from "../../services";
 import MainButtonComponent from "../../component/mainButton";
 
@@ -45,7 +45,7 @@ export default function ByGenderPage() {
   const [anverage, setAnverage] = useState(false);
   const [derivation, setDerivation] = useState(false);
   const [survived, setSurvived] = useState(false);
-  const [labels, setLabels] = useState(["Genre"]);
+  const [labels] = useState(["Genre"]);
   let navigate = useNavigate();
 
   const handleGetPassengers = async () => {
@@ -140,8 +140,6 @@ export default function ByGenderPage() {
       },
     ],
   };
-
-  console.log(passengersData);
 
   const dataSurvived = {
     labels,

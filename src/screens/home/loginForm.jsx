@@ -50,9 +50,7 @@ export default function LoginFormComponent() {
       if (type == "connection") {
         validatorsLoginFrom(signIn);
         apiService.postLogin(signIn).then((e) => {
-          console.log(e);
           if (e.status == 200) {
-            console.log("TESTLOGIN", e);
             setSignIn({
               email: "",
               password: "",
@@ -60,9 +58,10 @@ export default function LoginFormComponent() {
             navigate("/search");
             window.localStorage.setItem("token", e.data.token);
             updateIslogin(true);
-          } else if (e.status === 205) {
-            setErrors([{ type: "login", message: "Compte introuvable" }]);
-            console.log("compte pas trouvé");
+          } else {
+            setErrors([
+              { type: e.response.data.type, message: e.response.data.message },
+            ]);
           }
         });
       } else {

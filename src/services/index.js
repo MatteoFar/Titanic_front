@@ -15,18 +15,30 @@ titanicService.interceptors.request.use((config) => {
 
 const apiService = {
   async postUser(newUser) {
-    const res = await titanicService.post("/signup", newUser);
-    return res;
+    try {
+      const res = await titanicService.post("/signup", newUser);
+      return res;
+    } catch (error) {
+      return error;
+    }
   },
 
   async postLogin(user) {
-    const res = await titanicService.post("/signin", user);
-    return res;
+    try {
+      const res = await titanicService.post("/signin", user);
+      return res;
+    } catch (error) {
+      return error;
+    }
   },
 
   async getAllPassengers() {
-    const res = await titanicService.get("/getAllPassengers");
-    return res;
+    try {
+      const res = await titanicService.get("/getAllPassengers");
+      return res;
+    } catch (error) {
+      return error;
+    }
   },
 };
 
